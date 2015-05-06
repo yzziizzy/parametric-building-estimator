@@ -1,0 +1,14 @@
+{
+  "name": "house",
+  "version": "0.0.0",
+  "description": "",
+  "main": "house.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "izzy",
+  "license": "AGPLv3",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
+}
