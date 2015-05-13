@@ -353,26 +353,27 @@ function cheapestCut(cutPlans) {
 
 // currently assumes only one type of supply and square dimensions
 function sheetCut(cut, supplies) {
-	console.log(cut);
-	console.log(supplies);
+// 	console.log('----------sheet cut--------'.magenta);
+// 	console.log(cut);
+// 	console.log(supplies);
 	
-	function trySupplyDirection(w, h, supply) {
+	function trySupplyDirection(w, l, supply) {
 		
-		var qty = ceil(cut.dim.h / h) * ceil(cut.dim.w / w);
-		console.log(qty);
+		var qty = ceil(cut.dim.l / l) * ceil(cut.dim.w / w);
+		
 		return {
 			cuts: [ supply ],
 			unitCost: supply.cost,
-			totalArea: qty * h * w,
-			waste: (qty * h * w) - (cut.dim.h * cut.dim.w),
+			totalArea: qty * l * w,
+			waste: (qty * l * w) - (cut.dim.l * cut.dim.w),
 			qty: qty,
 			cost: supply.cost * qty,
 		};
 	}
 	
 	function bestSupplyDirection(supply) {
-		var horz = trySupplyDirection(supply.dim.h, supply.dim.w, supply);
-		var vert = trySupplyDirection(supply.dim.w, supply.dim.h, supply);
+		var horz = trySupplyDirection(supply.dim.l, supply.dim.w, supply);
+		var vert = trySupplyDirection(supply.dim.w, supply.dim.l, supply);
 		
 		return horz.cost < vert.cost ? horz : vert;
 	}
@@ -384,6 +385,8 @@ function sheetCut(cut, supplies) {
 	bestCut.waste *= cnt;
 	bestCut.totalArea *= cnt;
 	bestCut.cost *= cnt;
+	
+// 	console.log('^^^^^^^^^^^^^^^^^^^^^^^^^'.magenta);
 	
 	return bestCut;
 }
@@ -437,18 +440,23 @@ function cutSegment(segment) {
 	
 	var order = dimOrder(segment.dim);
 	
-	console.log('\n-------- segment -------------\n'.magenta);
-	console.log('  order:   ' + order);
-	console.log('  segment:   ' + util.inspect(segment).green);
-	console.log('  cut qty: ' + (segment.cnt || 1)); 
-	console.log('  cut dim: ' + (typeof segment.dim == 'object' ? util.inspect(segment.dim) : segment.dim)); 
-	console.log('\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'.magenta);
+	if(false) {
+		console.log('\n-------- segment -------------\n'.magenta);
+		console.log('  order:   ' + order);
+		console.log('  segment:   ' + util.inspect(segment).green);
+		console.log('  cut qty: ' + (segment.cnt || 1)); 
+		console.log('  cut dim: ' + (typeof segment.dim == 'object' ? util.inspect(segment.dim) : segment.dim)); 
+		console.log('\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'.magenta);
+	}
 	// 	console.log(order);
 //  	console.log(segment);
 	
 	
-	return cutPlanOrders[order]();
+	var cp = cutPlanOrders[order]();
 	
+	cp.material = segment.material;
+	
+	return cp;
 	// ,multiply in the quantity later
 }
 
@@ -520,7 +528,7 @@ function crunch() {
 			// hacks for incomplete data
 			//if(typeof cut.dim != 'number') return 0;
 			if(!supply[type]) {
-				console.log('!! Error: no supply for type "' + type + '"');
+				console.log(('!! Error: no supply for type "' + type + '"').red);
 				return 0;
 			}
 			
@@ -531,9 +539,9 @@ function crunch() {
 	});
 	
 	
-	console.log('\n\n---- Plans ----');
+	//console.log('\n\n---- Plans ----');
 	
-	console.log(plans);
+	//console.log(plans);
 	
 	console.log(getCost(plans));
 // 	console.log(getBOM(plans));
@@ -696,14 +704,14 @@ function TraditionalWoodFramed(length, width, roofHeight) {
 }
 
 
-function processComponent(segments) {
-
+function processComponents(segments) {
+// 	console.log(segments);
 	
 	// calculate cuts
 	return segments.map(function(segment) {
 		
 		var cutList = cutSegment(segment);
-		console.log(cutList);
+// 		console.log(cutList);
 		return cutList;
 		
 	});
@@ -711,6 +719,14 @@ function processComponent(segments) {
 }
 
 
+// flatten one level. i hate having to remember the args for _.flatten for one level 
+function squash(arr) {
+	var o = [];
+	for(var i = 0, len = arr.length; i < len; i++) {
+		o.concat(arr[i]);
+	}
+	return o;
+}
 
 meh();
 
@@ -718,8 +734,25 @@ meh();
 function meh() { 
 	var comps =  TraditionalWoodFramed(40, 20, 5).objectMerge();
 	
-	processComponent(compToSegments(comps));// need to make this a map 
-
+	
+	var cl = processComponents(compToSegments(comps));// need to make this a map 
+	
+	//console.log(squash(cl.pluck('cuts')));
+	//console.log(cl[0]);
+	
+	var cost = cl.reduce(function(acc, x) {
+		return acc + (isNaN(x.cost) ? 0 : x.cost); 
+	}, 0);
+	
+	
+	console.log('Bill Of Materials:'.bold.red);
+	
+	var cost_breakdown = cl.reduce(function(acc, x) {
+		acc[x.material] = (acc[x.material] || 0) + (isNaN(x.cost) ? 0 : x.cost); 
+		return acc;
+	}, {});
+	console.log(cost_breakdown);
+	console.log(('total cost: '.bold.red) + cost.toFixed(2));
 	
 	// split out waste
 	
