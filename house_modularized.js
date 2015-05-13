@@ -699,9 +699,26 @@ function TraditionalWoodFramed(length, width, roofHeight) {
 		prismRoof(length, width, roofHeight),
 		foundation(length, width, 8),
 	];
-	
-	
 }
+
+function Octohouse(sidelen, roofHeight) {
+	
+	var len = sidelen + (sidelen * 2 / Math.sqrt(2));
+	console.log(len);
+	return [
+		studWall(sidelen),
+		studWall(sidelen),
+		studWall(sidelen),
+		studWall(sidelen),
+		studWall(sidelen),
+		studWall(sidelen),
+		studWall(sidelen),
+		studWall(sidelen),
+		prismRoof(len, len, roofHeight),
+		foundation(len, len, 8),
+	];
+}
+
 
 
 function processComponents(segments) {
@@ -732,7 +749,8 @@ meh();
 
 // returns list of Component Members
 function meh() { 
-	var comps =  TraditionalWoodFramed(40, 20, 5).objectMerge();
+//	var comps =  TraditionalWoodFramed(28, 28, 5).objectMerge();
+ 	var comps =  Octohouse(12, 5).objectMerge();
 	
 	
 	var cl = processComponents(compToSegments(comps));// need to make this a map 
