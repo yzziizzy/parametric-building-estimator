@@ -17,137 +17,17 @@ results are that one should eat each day:
 */
 
 
+require('./monkeys');
+require('./dsl');
 
 var _ = require('lodash');
+
 var util = require('util');
 var colors = require('colors');
 
 var QList = require('./qlist');
 
-var ceil = Math.ceil;
-var floor = Math.floor;
-var max = Math.max;
-var min = Math.min;
 
-
-function omap(obj, fn, out) {
-	out = out || {};
-	for(var k in obj) {
-		if(!obj.hasOwnProperty(k)) continue;
-		out[k] = fn(obj[k], k);
-	}
-	return out;
-}
-
-
-Object.defineProperty(Object.prototype, 'map', {
-	enumerable: false,
-	configurable: false,
-	writable: false,
-	value: function(fn, out) {
-		return omap(this, fn, out);
-	}
-});
-
-function oreduce(obj, fn, acc) {
-	for(var k in obj) {
-		if(!obj.hasOwnProperty(k)) continue;
-		acc = fn(acc, obj[k], k);
-	}
-	return acc;
-}
-
-
-Object.defineProperty(Object.prototype, 'reduce', {
-	enumerable: false,
-	configurable: false,
-	writable: false,
-	value: function(fn, acc) {
-		return oreduce(this, fn, acc);
-	}
-});
-
-// makes sure every property is an array
-Object.defineProperty(Object.prototype, 'forceArray', {
-	enumerable: false,
-	configurable: false,
-	writable: false,
-	value: function() {
-		for(var p in this) {
-			if(!this.hasOwnProperty(p)) continue;
-			if(!(this[p] instanceof Array))
-				this[p] = [this[p]];
-		}
-		return this;
-	}
-});
-
-// swap out keys for other keys
-Object.defineProperty(Object.prototype, 'remapKeys', {
-	enumerable: false,
-	configurable: false,
-	writable: false,
-	value: function(table) {
-		var out = {};
-		for(var p in this) {
-			if(!this.hasOwnProperty(p)) continue;
-			
-			var nk = table[p]
-			out[nk || p] = this[p];
-		}
-		return out;
-	}
-});
-
-
-// bad name. need new one. converts an object of arrays into a list of objects with 
-//   their original key as the given property name.
-Object.defineProperty(Object.prototype, 'unGroup', {
-	enumerable: false,
-	configurable: false,
-	writable: false,
-	value: function(keyName) {
-		var out = [];
-		for(var p in this) {
-			if(!this.hasOwnProperty(p)) continue;
-					  
-			var arr = this[p];
-			if(!(arr instanceof Array)) arr = [arr];
-			
-			out = out.concat(arr.map(function(x) {
-				x[keyName] = p;
-				return x;
-			}));
-		}
-		return out;
-	}
-});
-
-
-
-Object.defineProperty(Array.prototype, 'pluck', {
-	enumerable: false,
-	configurable: false,
-	writable: false,
-	value: function(prop) {
-		return this.map(function(x) { return x[prop]; });
-	}
-});
-
-Object.defineProperty(Array.prototype, 'objectMerge', {
-	enumerable: false,
-	configurable: false,
-	writable: false,
-	value: function(prop) {
-		return this.reduce(function(acc, x) {
-			for(var k in x) {
-				if(!acc[k]) acc[k] = x[k];
-				else acc[k] = acc[k].concat(x[k]);
-			}
-			return acc;
-		}, {});
-	}
-});
 
 
 
@@ -736,14 +616,6 @@ function processComponents(segments) {
 }
 
 
-// flatten one level. i hate having to remember the args for _.flatten for one level 
-function squash(arr) {
-	var o = [];
-	for(var i = 0, len = arr.length; i < len; i++) {
-		o.concat(arr[i]);
-	}
-	return o;
-}
 
 meh();
 
@@ -755,7 +627,7 @@ function meh() {
 	
 	var cl = processComponents(compToSegments(comps));// need to make this a map 
 	
-	//console.log(squash(cl.pluck('cuts')));
+	//console.log(cl.pluck('cuts').squash()));
 	//console.log(cl[0]);
 	
 	var cost = cl.reduce(function(acc, x) {
