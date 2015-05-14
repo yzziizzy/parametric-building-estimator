@@ -25,9 +25,10 @@ var _ = require('lodash');
 var util = require('util');
 var colors = require('colors');
 
-var QList = require('./qlist');
+// var QList = require('./qlist');
 
-
+// listing of available materials and their data
+var supply = require('./supplies').forceArray();
 
 
 
@@ -82,85 +83,14 @@ interior walls
 
 
 
-function dimScalar(dim) {
-	if(typeof dim == 'number') return dim;
-	if(typeof dim == 'undefined') return 1;
-	
-	var s = 1;
-	if(dim.w) s *= dim.w;
-	if(dim.h) s *= dim.h;
-	if(dim.l) s *= dim.l;
-	
-	return s;
-}
-
-function dimOrder(dim) {
-	if(typeof dim == 'number') return 0;
-	if(typeof dim == 'undefined') return 0;
-	
-	var s = 0;
-	if(dim.w) s++;
-	if(dim.h) s++;
-	if(dim.l) s++;
-	
-	return s;
-}
 
 
 
-var nextStockId = 1;
-function Stock(dim, cost) {
-	
-	var s = dimScalar(dim);
-	var uc = (cost || 0) / s;
-	
-	return {
-		dim: dim,
-		cost: cost,
-		unitCost: uc,
-		scalarDim: s,
-		order: dimOrder(dim),
-		id: '' + nextStockId++,
-	};
-}
 
 
 
-var supply = {
-	d2x4: [
-		Stock(d(8), 2.7),
-		Stock(d(10), 3.2),
-		Stock(d(12), 4),
-		Stock(d(16), 5.4),
-	],
-	d2x6: [
-		Stock(d(8), 4),
-	],
-	d2x8: [
-		Stock(d(8), 6),
-	],
-	d2x10: [
-		Stock(d(8), 8),
-	],
-	d2x12: [
-		Stock(d(8), 12),
-	],
-	foam: Stock(1, 1.5),
-	hurricane_strap: Stock(1, .75),
-	concrete: Stock(1, 100),
-	roof_felt_30lb: Stock(d(1, 1), 21 / 216), // $21 for 216 sqft 
-	tyvek: Stock(1, 21 / 216), // $21 for 216 sqft 
-	flooring: Stock(1, 2 + .50), // engineered hardwood and underlayment
-	siding: Stock(1, 7.35 / 8), // 12'x8" = 8 sq ft, fiber cement lap
-	osb_716: Stock(d(4, 8), 13.5),
-	cdx_5: Stock(d(4, 8), 18),
-	cdx_75: Stock(d(4, 8), 26),
-	drywall: Stock(d(4, 8), 13),
-	metalRoof_panel: Stock(d(3, 16), 46),
-	metalRoof_gable: Stock(d(12), 15),
-	metalRoof_screws: Stock(1, 22 / 250), // bag of 250
-	
-}.forceArray();
+
+
 
 
 
@@ -431,27 +361,8 @@ function crunch() {
 
 //crunch();
 
-function Component(members) {
-	return members.forceArray();
-};
 
-function CompMember(dim, cnt, orient) {
-	return {
-		dim: dim,
-		cnt: cnt || 1,
-		orient: orient,
-	}
-};
 	
-function d(l, w, h) {
-	var o = {};
-	
-	if(l) o.l = l;
-	if(w) o.w = w;
-	if(h) o.h = h;
-	
-	return o;
-}
 
 
 // returns a component
