@@ -22,13 +22,31 @@ require('./dsl');
 
 var _ = require('lodash');
 
+
 var util = require('util');
 var colors = require('colors');
+var fs = require('fs');
 
 // var QList = require('./qlist');
 
+
+
+var argv = require('minimist')(process.argv.slice(2));
+
+
 // listing of available materials and their data
 var supply = require('./supplies').forceArray();
+
+
+
+var plans = _.indexBy(fs.readdirSync('./plans')
+	.filter(function(x) { return x[0] != '.'; })
+	.filter(function(x) { return !!x.match(/\.js$/); })
+	.map(function(file) {
+		return {name: file.replace(/\..*$/, ''), fn: require('./plans/' + file)};
+	}), 'name')
+	.map(function(o) { return o.fn });
+
 
 
 
@@ -282,233 +300,24 @@ function combineCutPlans(plans) {
 
 
 
-// for(var i = 0; i < 50; i++) {
-// 	var plan = findCheapestCutPlan(i, tbf.d2x4);
-// 	
-// 	console.log(i, plan.cost.toFixed(2,2) , plan.waste);
-// }
 
 
 
 
-function getCost(materialPlans) {
-	
-	return materialPlans.reduce(function(acc, plans, type) {
-		acc[type] = plans.reduce(function(acc, plan) {
-			return (plan.cost ? acc + plan.cost : acc);
-		}, 0);
-		
-		acc.total += acc[type]; 
-		return acc;
-		
-	}, {total: 0});
-	
-};
+function compToSegments(members) {
 
-
-
-function getQty(bom) {
-	
-	return bom.reduce(function(acc, plans, type) {
-		acc[type] = plans.reduce(function(acc, plan) {
-			return (plan.cost ? acc + plan.cost : acc);
-		}, 0);
-		
-		acc.total += acc[type]; 
-		return acc;
-		
-	}, {total: 0});
-	
-};
-
-
-
-function crunch() {
-	var shellRaw = shell(40,20);
-	/*	d2x4: [ { dim: 20, cnt: 3 } ],
-		osb_716: [{dim: {w: 30, h: 20} }] 
-	} ;*/
-	console.log('---- Raw Shell ----'.cyan);
-	console.log(shellRaw);
-	console.log('^^^^^^^^^^^^^^^^^^^'.cyan);
-	
-	plans = shellRaw.map(function(needs, type) {
-		return needs.map(function(cut) {
-			//console.log(cut);
-			// hacks for incomplete data
-			//if(typeof cut.dim != 'number') return 0;
-			if(!supply[type]) {
-				console.log(('!! Error: no supply for type "' + type + '"').red);
-				return 0;
-			}
-			
-			console.log('\n** Finding cut plan for "' + type + '"');
-			
-			return findCheapestCutPlan(cut, supply[type]);
-		});
+	var segments = members.remapKeys({
+		sheathing: 'cdx_5',
+		stud: 'd2x4',
+		insulation: 'foam',
+		rafter: 'd2x6', // TODO: needs to be extensible
 	});
 	
-	
-	//console.log('\n\n---- Plans ----');
-	
-	//console.log(plans);
-	
-	console.log(getCost(plans));
-// 	console.log(getBOM(plans));
-	
-	//var shellCuts = calcCuts(raw, calcUnitCost(supply));
-};
+	return segments.unGroup('material');
 
-//crunch();
-
-
-	
-
-
-// returns a component
-function studWall(length, height) {
-	// height assumed at 8'
-	
-	var studCenter = 16 / 12;
-	
-	var numStuds = ceil(length / studCenter) + 2; // 2 extra for end caps
-	var plates = 3 * ceil(length / 8); // top plate is doubled up
-	
-	var sheathing = ceil(length / 4);
-	
-	return Component({
-		stud: [
-			CompMember(length, 3), // plates
-			CompMember(8, numStuds)], // plates
-		sheathing: CompMember(d(length, 8), sheathing),
-		insulation: CompMember(1, length * 8),
-		drywall: CompMember(d(length, 8), sheathing),
-		tyvek: CompMember(1, length * 8),
-		siding: CompMember(1, length * 8),
-	});
-}
-
-// function add(arr) {
-// 	
-// 	return arr.reduce(function(acc, x) {
-// 		for(var k in x) {
-// 			if(!acc[k]) acc[k] = x[k];
-// 			else acc[k] = acc[k].concat(x[k]);
-// 		}
-// 		return acc;
-// 	}, {});
-// }
-
-/*
-function shell(length, width) {
-	return add([
-		wall(length),
-		wall(length),
-		wall(width),
-		wall(width),
-		prismRoof(length, width, 8),
-		foundation(length, width, 8),
-	]);
-};*/
-
-function prismRoof(length, width, height) {
-	
-	var hyp = Math.sqrt((height * height) + ((width/2) * (width/2)));
-	
-	// roof sheathing must be horizontal
-	var sheathing = ceil(length / 8) * ceil(hyp / 4);
-	
-	var rafterCenter = 16 / 12;
-	
-	var rafters = ceil(length / rafterCenter);
-	
-	var rafterType;
-	if(hyp > 24) rafterType = 'd2x12';
-	if(hyp > 20) rafterType = 'd2x10';
-	else if(hyp > 16) rafterType = 'd2x8';
-	else if(hyp > 12) rafterType = 'd2x6';
-	else rafterType = 'd2x4';
-	
-	var ceilingRafters = ceil(width / 8) * rafters;
-	var vertSupport = ceil(height / 8) * rafters;
-	
-	// metal roofing: $46 for 3x16'
-	
-	var mLen = ceil(length / 3) * 2;
-	var metalPanels = ceil((mLen * hyp) / 16);
-	var metalScrews = metalPanels * 3 * 16;
-	var metalGable = ceil(length / 12);
-	
-	// TODO 1or2x2's to lift the roofing
-	// TODO: felt
-	
-	// TODO: roof nails, every rafter, 12"oc
-	
-	//ceiling drywall
-	var drywall = min(ceil(length / 4) * ceil(width / 8), 
-					  ceil(length / 8) * ceil(width / 4)); 
-	// TODO: screws every stud, 16"oc 
-	
-	return Component({
-		sheathing: CompMember(d(length, hyp), 2, 'h'),
-		roof_felt_30lb: CompMember(d(length, hyp), 2, 'h'),
-		metalRoof_panel: CompMember(d(length, hyp), 2, 'v'),
-		metalRoof_gable: CompMember(length, 1),
-		metalRoof_screws: CompMember(1, metalScrews),
-		insulation: CompMember(1, length * hyp * 2),
-		hurricane_strap: CompMember(1, rafters * 2),
-		drywall: CompMember(d(length, width), drywall),
-		rafter: [
-			CompMember(d(hyp), rafters * 2), // risers
-			CompMember(d(width), rafters), // hip rafters
-			CompMember(d(height), rafters), // jack studs
-		],
-	});
 }
 
 
-function foundation(length, width, thickness) {
-	return Component({
-		concrete: CompMember(1, (length * width * (thickness / 12)) / 27),
-// 		flooring: [{dim: {w: length, h: width}}],
-		flooring: CompMember(1, length * width),
-// 		rebar_5: [5], 
-	});
-};
-
-
-
-
-
-// returns a list of components
-function TraditionalWoodFramed(length, width, roofHeight) {
-	return [
-		studWall(length),
-		studWall(length),
-		studWall(width),
-		studWall(width),
-		prismRoof(length, width, roofHeight),
-		foundation(length, width, 8),
-	];
-}
-
-function Octohouse(sidelen, roofHeight) {
-	
-	var len = sidelen + (sidelen * 2 / Math.sqrt(2));
-	console.log(len);
-	return [
-		studWall(sidelen),
-		studWall(sidelen),
-		studWall(sidelen),
-		studWall(sidelen),
-		studWall(sidelen),
-		studWall(sidelen),
-		studWall(sidelen),
-		studWall(sidelen),
-		prismRoof(len, len, roofHeight),
-		foundation(len, len, 8),
-	];
-}
 
 
 
@@ -533,8 +342,9 @@ meh();
 // returns list of Component Members
 function meh() { 
 //	var comps =  TraditionalWoodFramed(28, 28, 5).objectMerge();
- 	var comps =  Octohouse(12, 5).objectMerge();
+ 	//var comps =  Octohouse(12, 5).objectMerge();
 	
+	var comps = plans.OctohouseWoodFramed.components(12, 5).objectMerge()
 	
 	var cl = processComponents(compToSegments(comps));// need to make this a map 
 	
@@ -565,19 +375,6 @@ function meh() {
 
 
 
-function compToSegments(members) {
-
-	var segments = members.remapKeys({
-		sheathing: 'cdx_5',
-		stud: 'd2x4',
-		insulation: 'foam',
-		rafter: 'd2x6', // TODO: needs to be extensible
-	});
-	
-	return segments.unGroup('material');
-
-}
-
 
 
 function rConcat(acc, arr) {
@@ -587,13 +384,6 @@ function rConcat(acc, arr) {
 }
 
 
-
-// console.log('BOM:');
-// console.log(shell(20,40));
-// console.log('Cost:');
-// console.log(getCost(shell(20,40)));
-// 
-// 
 
 
 /*

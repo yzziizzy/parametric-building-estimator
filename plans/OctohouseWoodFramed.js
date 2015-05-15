@@ -9,7 +9,7 @@ var slabFoundation = require('./parts/foundations').slab;
 
 
 module.exports = {
-	components: Octohouse(sidelen, roofHeight) {
+	components: function(sidelen, roofHeight) {
 		
 		var len = sidelen + (sidelen * 2 / Math.sqrt(2));
 		console.log(len);
