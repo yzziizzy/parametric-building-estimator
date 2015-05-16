@@ -337,6 +337,16 @@ function processComponents(segments) {
 
 
 
+
+
+function calcPlanCuts(plan) {
+	
+	var comps = plan.objectMerge();
+	
+	return compToSegments(comps).map(cutSegment);
+}
+
+
 meh();
 
 // returns list of Component Members
@@ -344,9 +354,10 @@ function meh() {
 //	var comps =  TraditionalWoodFramed(28, 28, 5).objectMerge();
  	//var comps =  Octohouse(12, 5).objectMerge();
 	
-	var comps = plans.OctohouseWoodFramed.components(12, 5).objectMerge()
+// 	var comps = plans.OctohouseWoodFramed.components(12, 5).objectMerge()
 	
-	var cl = processComponents(compToSegments(comps));// need to make this a map 
+// 	var cl = processComponents(compToSegments(comps));// need to make this a map 
+	var cl = calcPlanCuts(plans.OctohouseWoodFramed.components(12, 5));
 	
 	//console.log(cl.pluck('cuts').squash()));
 	//console.log(cl[0]);
