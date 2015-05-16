@@ -321,24 +321,6 @@ function compToSegments(members) {
 
 
 
-function processComponents(segments) {
-// 	console.log(segments);
-	
-	// calculate cuts
-	return segments.map(function(segment) {
-		
-		var cutList = cutSegment(segment);
-// 		console.log(cutList);
-		return cutList;
-		
-	});
-	
-}
-
-
-
-
-
 function calcPlanCuts(plan) {
 	
 	var comps = plan.objectMerge();
@@ -357,7 +339,11 @@ function meh() {
 // 	var comps = plans.OctohouseWoodFramed.components(12, 5).objectMerge()
 	
 // 	var cl = processComponents(compToSegments(comps));// need to make this a map 
-	var cl = calcPlanCuts(plans.OctohouseWoodFramed.components(12, 5));
+	var opts = {
+		sideLength: 12,
+		roofHeight: 5,
+	};
+	var cl = calcPlanCuts(plans.OctohouseWoodFramed(opts).components());
 	
 	//console.log(cl.pluck('cuts').squash()));
 	//console.log(cl[0]);
