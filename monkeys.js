@@ -175,5 +175,16 @@ Object.defineProperty(Array.prototype, 'pairsToObj', {
 
 
 
-
+	// opposite of pluck
+Object.defineProperty(Array.prototype, 'sow', {
+	enumerable: false,
+	configurable: false,
+	writable: false,
+	value: function(prop, val) {
+		for(var i = 0, len = this.length; i < len; i++) {
+			this[i][prop] = val;
+		}
+		return this;
+	}
+});
 

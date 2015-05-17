@@ -360,28 +360,58 @@ function meh2() {
 	
 	
 	if(argv.o) {
-		var opts = parseOpts(argv.o);
+		var opts = parseOpts(argv.o.replace(/\s+/, ''));
 	}
 	if(argv.from) {
-		var from_opts = parseOpts(argv.from);
+		var from_opts = parseOpts(argv.from.replace(/\s+/, ''));
 	}
 	if(argv.to) {
-		var to_opts = parseOpts(argv.to);
+		var to_opts = parseOpts(argv.to.replace(/\s+/, ''));
+	}
+	if(argv.step) {
+		var step_opts = parseOpts(argv.step.replace(/\s+/, ''));
 	}
 	
 	
 	
-// 	console.log(opts);
+	console.log(step_opts);
 	
 	// actual work
-	var cl = calcPlanCuts(plan(opts).components());
+	function calcCost(opts) {
+		var cl = calcPlanCuts(plan(opts).components());
 	
-	if(argv.c || argv['cost-only']) {
-		console.log(cl.reduce(function(acc, x) {
+		return cl.reduce(function(acc, x) {
 			return acc + (isNaN(x.cost) ? 0 : x.cost); 
-		}, 0).toFixed(2));
+		}, 0).toFixed(2);
 	}
 	
+	function printStep(opts) {
+		var cost = calcCost(opts);
+		
+		// shit
+		console.log(opts, cost);
+	}
+	
+	
+	function allSteps(from, to, step, free) {
+		if(!free.length) return [{}];
+		
+		free = free.slice();
+		
+		var v = free.shift();
+		var o = [];
+		
+		
+		// broken condition
+		for(var i = from[v]; i <= to[v]; i += step[v]) {
+			var x = allSteps(from, to, step, free);
+			o = o.concat(x.sow(v, i));
+		}
+	
+		return o;
+	}
+	
+	allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts)).map(printStep);
 	
 }
 
