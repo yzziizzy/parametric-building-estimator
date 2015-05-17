@@ -329,7 +329,64 @@ function calcPlanCuts(plan) {
 }
 
 
-meh();
+
+
+
+meh2();
+function meh2() {
+	
+// 	console.log(argv);
+// 	var plan = argv.
+	
+	if(argv.L || argv['list-plans']) {
+		Object.keys(plans).sort().map(function(pn) { console.log(pn) });
+		return;
+	}
+	
+	var plan = plans[argv._[0]];
+	
+	if(!plan) {
+		console.log('no such plan: ' + argv._[0]);
+		process.exit(1);
+	}
+	
+	
+	function parseOpts(s) {
+		return s.split(',')
+			.map(function(x) { return x.split(':')})
+			.pairsToObj()
+			.map(parseFloat);
+	}
+	
+	
+	if(argv.o) {
+		var opts = parseOpts(argv.o);
+	}
+	if(argv.from) {
+		var from_opts = parseOpts(argv.from);
+	}
+	if(argv.to) {
+		var to_opts = parseOpts(argv.to);
+	}
+	
+	
+	
+// 	console.log(opts);
+	
+	// actual work
+	var cl = calcPlanCuts(plan(opts).components());
+	
+	if(argv.c || argv['cost-only']) {
+		console.log(cl.reduce(function(acc, x) {
+			return acc + (isNaN(x.cost) ? 0 : x.cost); 
+		}, 0).toFixed(2));
+	}
+	
+	
+}
+
+
+// meh();
 
 // returns list of Component Members
 function meh() { 

@@ -147,9 +147,31 @@ Object.defineProperty(Array.prototype, 'squash', {
 	}
 });
 
+Object.defineProperty(Array.prototype, 'indexBy', {
+	enumerable: false,
+	configurable: false,
+	writable: false,
+	value: function(prop) {
+		var o = {};
+		for(var i = 0, len = this.length; i < len; i++) {
+			o[this[i][prop]] = this[i];
+		}
+		return o;
+	}
+});
 
-
-
+Object.defineProperty(Array.prototype, 'pairsToObj', {
+	enumerable: false,
+	configurable: false,
+	writable: false,
+	value: function() {
+		var o = {};
+		for(var i = 0, len = this.length; i < len; i++) {
+			o[this[i][0]] = this[i][1];
+		}
+		return o;
+	}
+});
 
 
 

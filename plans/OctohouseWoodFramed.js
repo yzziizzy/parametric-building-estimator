@@ -12,7 +12,7 @@ module.exports = function(options) { return {
 	components: function() {
 		var sidelen = options.sideLength;
 		var len = sidelen + (sidelen * 2 / Math.sqrt(2));
-		console.log(len);
+// 		console.log(len);
 		return [
 			studWall(sidelen),
 			studWall(sidelen),
