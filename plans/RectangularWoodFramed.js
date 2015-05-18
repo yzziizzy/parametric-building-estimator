@@ -30,6 +30,10 @@ module.exports = function(options) { return {
 		{ name: 'foundationDepth', unit: 'inches', def: 8, desc: 'Thickness of foundation slab' },
 	],
 	
+	area: function() {
+		return options.length * options.width;
+	},
+	
 }};
 	
 

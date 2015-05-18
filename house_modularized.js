@@ -385,11 +385,22 @@ function meh2() {
 		}, 0).toFixed(2);
 	}
 	
+	function printArea(opts) {
+		//shit
+		console.log(opts, plan(opts).area());
+	}
 	function printStep(opts) {
 		var cost = calcCost(opts);
 		
 		// shit
 		console.log(opts, cost);
+	}
+	
+	function printDollarsPerArea(opts) {
+		var cost = calcCost(opts);
+		
+		// shit
+		console.log(opts, (cost / plan(opts).area()).toFixed(2));
 	}
 	
 	
@@ -411,7 +422,17 @@ function meh2() {
 		return o;
 	}
 	
-	allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts)).map(printStep);
+	var steps = allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts))
+	if(argv.a && argv.c) {
+		steps.map(printDollarsPerArea);
+	}
+	else if(argv.cost || argv.c) {
+		steps.map(printStep);
+	}
+	else if(argv.sqft || argv.a) {
+		steps.map(printArea);
+	}
+	
 	
 }
 

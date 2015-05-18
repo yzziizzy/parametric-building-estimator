@@ -33,6 +33,16 @@ module.exports = function(options) { return {
 		{ name: 'foundationDepth', unit: 'inches', def: 8, desc: 'Thickness of foundation slab' },
 	],
 	
+	
+	area: function() {
+		var sidelen = options.sideLength;
+		
+		var alen = sidelen / Math.sqrt(2);
+		var len = sidelen + (2 * alen);
+		
+		return (len * len) - (alen * alen * 2);
+	}
+	
 }};
 
 
