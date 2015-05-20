@@ -34,14 +34,19 @@ module.exports = function(options) { return {
 	],
 	
 	
-	area: function() {
+	area: function area() {
 		var sidelen = options.sideLength;
 		
 		var alen = sidelen / Math.sqrt(2);
 		var len = sidelen + (2 * alen);
 		
 		return (len * len) - (alen * alen * 2);
-	}
+	},
+	
+	volume: function volume() {
+		return area() * 8; 
+	},
+	livableVolume: volume,
 	
 }};
 
