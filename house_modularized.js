@@ -301,20 +301,16 @@ function combineCutPlans(plans) {
 
 
 
+var defaultMaterials = {
+	sheathing: 'cdx_5',
+	stud: 'd2x4',
+	insulation: 'foam',
+	rafter: 'd2x6', // TODO: needs to be extensible
+};
 
 
-
-function compToSegments(members) {
-
-	var segments = members.remapKeys({
-		sheathing: 'cdx_5',
-		stud: 'd2x4',
-		insulation: 'foam',
-		rafter: 'd2x6', // TODO: needs to be extensible
-	});
-	
-	return segments.unGroup('material');
-
+function compToSegments(members, materials) {
+	return members.remapKeys(materials).unGroup('material');
 }
 
 
@@ -325,8 +321,11 @@ function calcPlanCuts(plan) {
 	
 	var comps = plan.objectMerge();
 	
-	return compToSegments(comps).map(cutSegment);
+	return compToSegments(comps, defaultMaterials).map(cutSegment);
 }
+
+
+
 
 
 
@@ -404,23 +403,7 @@ function meh2() {
 	}
 	
 	
-	function allSteps(from, to, step, free) {
-		if(!free.length) return [{}];
-		
-		free = free.slice();
-		
-		var v = free.shift();
-		var o = [];
-		
-		
-		// broken condition
-		for(var i = from[v]; i <= to[v]; i += step[v]) {
-			var x = allSteps(from, to, step, free);
-			o = o.concat(x.sow(v, i));
-		}
-	
-		return o;
-	}
+
 	
 	var steps = allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts))
 	if(argv.a && argv.c) {
@@ -434,6 +417,57 @@ function meh2() {
 	}
 	
 	
+}
+
+
+
+function calcPlan(plan, opts, materials) {
+	
+	var o  ={
+		opts: _.extend({}, opts),
+		plan: plan,
+		materials: materials,
+	};
+	
+	o.comps = plan(opts).components().objectMerge();
+	
+	o.cuts = compToSegments(o.comps, materials).map(cutSegment);
+	
+	return o;
+}
+
+
+function calcTable(from, to, step, plan, materials) {
+	
+	var steps = allSteps(from, to, step, Object.keys(step));
+	
+
+	
+	return cl.reduce(function(acc, x) {
+		return acc + (isNaN(x.cost) ? 0 : x.cost); 
+	}, 0).toFixed(2);
+	
+	return  steps.map()
+}
+
+
+
+function allSteps(from, to, step, free) {
+	if(!free.length) return [{}];
+	
+	free = free.slice();
+	
+	var v = free.shift();
+	var o = [];
+	
+	
+	// broken condition
+	for(var i = from[v]; i <= to[v]; i += step[v]) {
+		var x = allSteps(from, to, step, free);
+		o = o.concat(x.sow(v, i));
+	}
+
+	return o;
 }
 
 
