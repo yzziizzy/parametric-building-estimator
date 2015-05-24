@@ -437,15 +437,22 @@ function calcPlan(plan, opts, materials) {
 }
 
 
+function aggCosts() {
+	
+	return cl.reduce(function(acc, x) {
+		return acc + (isNaN(x.cost) ? 0 : x.cost); 
+	}, 0).toFixed(2);
+	
+}
+
+
 function calcTable(from, to, step, plan, materials) {
 	
 	var steps = allSteps(from, to, step, Object.keys(step));
 	
 
 	
-	return cl.reduce(function(acc, x) {
-		return acc + (isNaN(x.cost) ? 0 : x.cost); 
-	}, 0).toFixed(2);
+
 	
 	return  steps.map()
 }
