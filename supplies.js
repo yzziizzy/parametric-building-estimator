@@ -76,7 +76,12 @@ module.exports = {
 	cdx_5: Stock(d(4, 8), 18),
 	cdx_75: Stock(d(4, 8), 26),
 	
-	drywall: Stock(d(4, 8), 13),
+	drywall_25: Stock(d(4, 8), 11.76),
+	drywall_58: Stock(d(4, 8), 12.48),
+	greenboard_58: Stock(d(4, 8), 15.98),
+	fancy_drywall_58: Stock(d(4, 8), 21.00),
+	cement_board_25: Stock(d(3, 5), 9.97),
+	cement_board_5: Stock(d(4, 8), 22.47),
 	
 	ugly_wood_paneling: Stock(d(4, 8), 13.97), 
 	western_cedar_tng_planks: Stock(d(21/12, 8), 19.97), 
@@ -96,6 +101,8 @@ module.exports = {
 		Stock(d(2, 8), 6.58),
 		Stock(d(4, 8), 21.65),
 	],
+	
+// 	fiberglass_batt_r21: Stock(1, ),
 	
 	blown_cellulose: Stock(20, 11.73), // 20 cu ft per bag
 };

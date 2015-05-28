@@ -330,8 +330,47 @@ function calcPlanCuts(plan) {
 
 
 
+meh3();
+function meh3() {
+	
+	if(argv.L || argv['list-plans']) {
+		Object.keys(plans).sort().map(function(pn) { console.log(pn) });
+		return;
+	}
+	
+	var plan = plans[argv._[0]];
+	
+	if(!plan) {
+		console.log('no such plan: ' + argv._[0]);
+		process.exit(1);
+	}
+	
+	var min_price = parseFloat(argv.minp);
+	var max_price = parseFloat(argv.maxp);
+	
+	
+	// construct starting parameters
+	var opts = plan.options.map(function(x) {
+		return [x.name, x.range[0]];  
+	}).pairsToObj();
+	
+	
+	// only take into account 'major' options for now
+	// pick an epsilon
+	
+	// calc delta
+	
+	// guess a new epsilon to find min and max price points, plus some wiggle room
+	
+	// calc value for everything in between and report results
+	
+	
+}
 
-meh2();
+
+
+
+// meh2();
 function meh2() {
 	
 // 	console.log(argv);
