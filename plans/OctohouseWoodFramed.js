@@ -28,9 +28,9 @@ module.exports = function(options) { return {
 	},
 	
 	options: [ 
-		{ name: 'sideLength', unit: 'feet', desc: 'Length of one of the 8 sides' },
-		{ name: 'roofHeight', unit: 'feet', desc: 'Roof height from top of walls' },
-		{ name: 'foundationDepth', unit: 'inches', def: 8, desc: 'Thickness of foundation slab' },
+		{ name: 'sideLength', unit: 'feet', def: 10, range: [5, Infinity], major: true, desc: 'Length of one of the 8 sides' },
+		{ name: 'roofHeight', unit: 'feet', def: 5, range: [1, 10], desc: 'Roof height from top of walls' },
+		{ name: 'foundationDepth', unit: 'inches', def: 8, range: [6, 18], desc: 'Thickness of foundation slab' },
 	],
 	
 	

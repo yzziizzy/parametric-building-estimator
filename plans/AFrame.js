@@ -89,10 +89,10 @@ module.exports = function(options) { return {
 	},
 	
 	options: [ 
-		{ name: 'length', unit: 'feet', desc: 'House length, parallel to the roof line' },
-		{ name: 'width', unit: 'feet', desc: 'House width at the ground' },
-		{ name: 'height', unit: 'feet', desc: 'Height at the roof peak' },
-		{ name: 'foundationDepth', unit: 'inches', def: 8, desc: 'Thickness of foundation slab' },
+		{ name: 'length', unit: 'feet', def: 20, range: [10, Infinity], major: true, desc: 'House length, parallel to the roof line' },
+		{ name: 'width', unit: 'feet', def: 15, range: [10, Infinity], major: true, desc: 'House width at the ground' },
+		{ name: 'height', unit: 'feet', def: 20, range: [15, 40], major: true, desc: 'Height at the roof peak' },
+		{ name: 'foundationDepth', unit: 'inches', def: 8, range: [6, 18], desc: 'Thickness of foundation slab' },
 	],
 	
 	area: function() {
