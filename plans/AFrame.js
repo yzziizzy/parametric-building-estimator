@@ -98,6 +98,10 @@ module.exports = function(options) { return {
 	area: function() {
 		return options.length * options.width;
 	},
+	livableArea: function() {
+		
+		
+	}
 
 	volume: function() {
 		return options.length * options.width * options.height * .5;

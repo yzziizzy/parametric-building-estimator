@@ -42,6 +42,7 @@ module.exports = function(options) { return {
 		
 		return (len * len) - (alen * alen * 2);
 	},
+	livableArea: area,
 	
 	volume: function volume() {
 		return area() * 8; 
