@@ -131,7 +131,28 @@ module.exports = {
 		Stock(d(30), 178.20),
 		Stock(d(32), 190.08),
 	],
-	// https://www.menards.com/main/building-materials/trusses-i-joists-engineered-lumber/laminated-veneer-lumber-lvl-strand-lumber/c-5663.htm?page=2
+	
+	ijoist2_5x12: [
+		Stock(d(12), 18.48),
+		Stock(d(14), 21.56),
+		Stock(d(16), 24.64),
+		Stock(d(18), 27.72),
+		Stock(d(20), 30.80),
+		Stock(d(22), 33.88),
+		Stock(d(24), 36.96),
+		Stock(d(26), 40.04),
+		Stock(d(28), 43.12),
+		Stock(d(30), 46.20),
+		Stock(d(32), 49.28),
+		Stock(d(34), 52.36),
+		Stock(d(36), 55.44),
+		Stock(d(38), 58.52),
+		Stock(d(40), 61.60),
+		Stock(d(44), 67.76),
+		Stock(d(48), 73.92),
+	],
+
+	// https://www.menards.com/
 	
 	joist_hanger_2x4: Stock(1, .76),
 	joist_hanger_2x6: Stock(1, .96),
