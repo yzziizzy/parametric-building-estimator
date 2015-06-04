@@ -39,6 +39,49 @@ module.exports = {
 		Stock(d(12), 19.42),
 	],
 	
+	cedar4x4: [
+		Stock(d(8), 20.97),
+	],
+	cedar2x4: [
+		Stock(d(8), 7.98),
+	],
+	
+	lvl2x8: [
+		Stock(d(8), 26.49),
+		Stock(d(20), 33.12),
+		Stock(d(12), 39.74),
+		Stock(d(14), 46.37),
+		Stock(d(16), 52.99),
+		Stock(d(18), 59.62),
+		Stock(d(20), 66.24),
+		Stock(d(22), 72.86),
+		Stock(d(24), 79.49),
+		Stock(d(26), 86.11),
+		Stock(d(28), 92.74),
+		Stock(d(30), 99.36),
+		Stock(d(32), 105.98),
+	],
+	lvl2x10: [
+		Stock(d(8), 31.20),
+		Stock(d(10), 39.00),
+		Stock(d(12), 46.80),
+		Stock(d(14), 54.60),
+		Stock(d(18), 70.20),
+		Stock(d(20), 78.00),
+		Stock(d(22), 85.80),
+		Stock(d(24), 93.60),
+		Stock(d(26), 101.40),
+		Stock(d(28), 109.20),
+		Stock(d(30), 117.00),
+		Stock(d(32), 124.80),
+		Stock(d(34), 132.60),
+		Stock(d(36), 140.40),
+		Stock(d(38), 148.20),
+		Stock(d(40), 156.00),
+		Stock(d(48), 187.20),
+	],
+	// https://www.menards.com/main/building-materials/trusses-i-joists-engineered-lumber/laminated-veneer-lumber-lvl-strand-lumber/c-5663.htm?page=2
+	
 	joist_hanger_2x4: Stock(1, .76),
 	joist_hanger_2x6: Stock(1, .96),
 	joist_hanger_2x8: Stock(1, 1.11),
@@ -71,7 +114,10 @@ module.exports = {
 	roof_felt_30lb: Stock(d(1, 1), 21 / 216), // $21 for 216 sqft 
 	tyvek: Stock(1, 21 / 216), // $21 for 216 sqft 
 	flooring: Stock(1, 2 + .50), // engineered hardwood and underlayment
-	siding: Stock(1, 7.35 / 8), // 12'x8" = 8 sq ft, fiber cement lap
+	fiber_cement_siding: Stock(1, 7.35 / 8), // 12'x8" = 8 sq ft, fiber cement lap
+	fake_stone_siding_panel: Stock(1, 142.06 / 19), // adhesive not included
+	fake_stone_siding_loose: Stock(1,  59.97 / 8),
+	real_stone_siding_loose: Stock(1, 830.77 / 100), // mortar not included
 	osb_716: Stock(d(4, 8), 13.5),
 	cdx_5: Stock(d(4, 8), 18),
 	cdx_75: Stock(d(4, 8), 26),
@@ -86,6 +132,13 @@ module.exports = {
 	ugly_wood_paneling: Stock(d(4, 8), 13.97), 
 	western_cedar_tng_planks: Stock(d(21/12, 8), 19.97), 
 	aromatic_cedar_tng_planks: Stock(d(45/12, 4), 24.97), 
+	
+	baseboard_basic_mdf: Stock(d(12), 11.28), 
+	baseboard_basic_oak: Stock(d(12), 21.48), 
+	baseboard_fancy_hardwood: Stock(d(8), 20.48), 
+	baseboard_fancy_fjp: Stock(d(12), 23.97), 
+	crownmoulding_basic_mdf: Stock(d(8), 17.11), 
+	crownmoulding_fancy_poplar: Stock(d(8), 19.98), 
 	
 	metalRoof_panel: Stock(d(3, 16), 46),
 	metalRoof_gable: Stock(d(12), 15),
