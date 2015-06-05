@@ -132,6 +132,21 @@ module.exports = {
 		Stock(d(32), 190.08),
 	],
 	
+	ijoist2_5x10: [
+		Stock(d(16), 23.84),
+		Stock(d(18), 26.82),
+		Stock(d(20), 29.80),
+		Stock(d(22), 32.78),
+		Stock(d(24), 35.76),
+		Stock(d(26), 38.74),
+		Stock(d(28), 41.72),
+		Stock(d(30), 44.70),
+		Stock(d(32), 47.68),
+		Stock(d(34), 50.66),
+		Stock(d(36), 53.64),
+		Stock(d(38), 56.62),
+		Stock(d(40), 59.60),
+	],
 	ijoist2_5x12: [
 		Stock(d(12), 18.48),
 		Stock(d(14), 21.56),
@@ -150,6 +165,20 @@ module.exports = {
 		Stock(d(40), 61.60),
 		Stock(d(44), 67.76),
 		Stock(d(48), 73.92),
+	],
+	ijoist2_5x14: [
+		Stock(d(18), 34.02),
+		Stock(d(20), 37.80),
+		Stock(d(22), 41.58),
+		Stock(d(24), 45.36),
+		Stock(d(26), 49.14),
+		Stock(d(28), 52.92),
+		Stock(d(30), 56.70),
+		Stock(d(32), 60.48),
+		Stock(d(34), 64.26),
+		Stock(d(36), 68.04),
+		Stock(d(38), 71.82),
+		Stock(d(40), 75.60),
 	],
 
 	// https://www.menards.com/
@@ -215,16 +244,22 @@ module.exports = {
 	metalRoof_panel: Stock(d(3, 16), 46),
 	metalRoof_gable: Stock(d(12), 15),
 	metalRoof_screws: Stock(1, 22 / 250), // bag of 250
-	rigid_foam_2in_r13: [
+	pu_rigid_foam_2in_r13: [
 		Stock(d(4, 8), 32.25),
 	],
-	rigid_foam_2in_r10: [
+	piso_rigid_foam_2in_r10: [
 		Stock(d(2, 8), 21),
 		Stock(d(4, 8), 31.22),
 	],
-	rigid_foam_2in_r7_7: [
+	piso_rigid_foam_2in_r7_7: [
 		Stock(d(2, 8), 6.58),
 		Stock(d(4, 8), 21.65),
+	],
+	eps_rigid_foam_2in_r8: [
+		Stock(d(4, 8), 17.51),
+	],
+	eps_rigid_foam_laminated_2in_r8: [
+		Stock(d(4, 8), 22.66),
 	],
 	
 // 	fiberglass_batt_r21: Stock(1, ),

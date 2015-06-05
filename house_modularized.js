@@ -317,11 +317,11 @@ function compToSegments(members, materials) {
 
 
 
-function calcPlanCuts(plan) {
+function calcPlanCuts(plan, materials) {
 	
 	var comps = plan.objectMerge();
 	
-	return compToSegments(comps, defaultMaterials).map(cutSegment);
+	return compToSegments(comps, materials).map(cutSegment);
 }
 
 
@@ -330,7 +330,7 @@ function calcPlanCuts(plan) {
 
 
 
-meh3();
+//meh3();
 function meh3() {
 	
 	if(argv.L || argv['list-plans']) {
@@ -370,7 +370,7 @@ function meh3() {
 
 
 
-// meh2();
+meh2();
 function meh2() {
 	
 // 	console.log(argv);
@@ -416,7 +416,7 @@ function meh2() {
 	
 	// actual work
 	function calcCost(opts) {
-		var cl = calcPlanCuts(plan(opts).components());
+		var cl = calcPlanCuts(plan(opts).components(), defaultMaterials);
 	
 		return cl.reduce(function(acc, x) {
 			return acc + (isNaN(x.cost) ? 0 : x.cost); 
@@ -462,7 +462,7 @@ function meh2() {
 
 function calcPlan(plan, opts, materials) {
 	
-	var o  ={
+	var o = {
 		opts: _.extend({}, opts),
 		plan: plan,
 		materials: materials,
