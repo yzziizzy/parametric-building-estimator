@@ -40,10 +40,40 @@ module.exports = {
 	],
 	
 	cedar4x4: [
-		Stock(d(8), 20.97),
+		Stock(d(8), 27.80),
+		Stock(d(10), 39.18),
+		Stock(d(12), 47.01),
 	],
 	cedar2x4: [
 		Stock(d(8), 7.98),
+	],
+	cedar4x6: [
+		Stock(d(8), 61.04),
+		Stock(d(10), 76.30),
+		Stock(d(12), 91.56),
+		Stock(d(16), 122.08),
+	],
+	cedar4x8: [
+		Stock(d(8), 85.54),
+		Stock(d(10), 106.92),
+		Stock(d(12), 128.30),
+	],
+	cedar4x12: [
+		Stock(d(8), 112.23),
+		Stock(d(12), 168.35),
+	],
+	cedar6x6: [
+		Stock(d(8), 87.02),
+		Stock(d(10), 111.54),
+		Stock(d(12), 155.42),
+		Stock(d(16), 207.23),
+	],
+	cedar8x8: [
+		Stock(d(10), 206.93),
+		Stock(d(12), 248.31),
+	],
+	cedar6x10: [
+		Stock(d(20), 387.99),
 	],
 	
 	lvl2x8: [
