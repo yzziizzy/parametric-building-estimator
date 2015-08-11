@@ -5,6 +5,7 @@ global.ceil = Math.ceil;
 global.floor = Math.floor;
 global.max = Math.max;
 global.min = Math.min;
+global.hypot = Math.hypot;
 
 
 
