@@ -17,7 +17,7 @@ function slab(length, width, thickness) {
 
 
 
-function platform(length, width, thickness) {
+function platform(length, width) {
 	
 	var jspacing = 8 / 12;
 	
@@ -57,7 +57,7 @@ function platform(length, width, thickness) {
 
 module.exports = {
 	slab: slab,
-	
+	platform: platform,
 };
 
 

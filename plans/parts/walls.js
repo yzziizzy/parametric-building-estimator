@@ -42,7 +42,6 @@ function bareStudWall(length, height) {
 		stud: [
 			CompMember(length, 3), // plates
 			CompMember(height, numStuds)],
-		]
 	});
 }
 
