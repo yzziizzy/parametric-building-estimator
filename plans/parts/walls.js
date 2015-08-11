@@ -29,6 +29,24 @@ function studWall(length, height) {
 
 
 
+ 
+// returns a component
+function bareStudWall(length, height) {
+	// height assumed at 8'
+	
+	var studCenter = 16 / 12;
+	
+	var numStuds = ceil(length / studCenter) + 2; // 2 extra for end caps
+	
+	return Component({
+		stud: [
+			CompMember(length, 3), // plates
+			CompMember(height, numStuds)],
+		]
+	});
+}
+
+
 
 
 
@@ -44,5 +62,5 @@ function studWall(length, height) {
 
 module.exports = {
 	studWall: studWall,
-	
+	bareStudWall: bareStudWall,
 };
