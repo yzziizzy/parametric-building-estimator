@@ -69,6 +69,19 @@ function prismCorner(length, width, height) {
 	
 	// TODO hip rafter, various hangers for it
 	
+	// trig time! none of this will make any sense without the diagram.
+	var W = width,
+		L = length,
+		H = height,
+		X = hypot(W, L),
+		Y = hypot(X, H),
+		a = Math.atan(H / X);
+	
+	
+	
+	var ridgeRafter = Y; // there are 2 of these, one inside, one outside
+	
+	
 	var rafterCenter = 16 / 12;
 	
 	var rafters = ceil(length / rafterCenter);
