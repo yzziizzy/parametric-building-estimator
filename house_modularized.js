@@ -492,41 +492,49 @@ function meh2() {
 	function calcCost(opts) {
 		var cl = calcPlanCuts(plan(opts).components(), defaultMaterials);
 	
-		return cl.reduce(function(acc, x) {
+		return parseFloat(cl.reduce(function(acc, x) {
 			return acc + (isNaN(x.cost) ? 0 : x.cost); 
-		}, 0).toFixed(2);
+		}, 0).toFixed(2));
 	}
 	
 	function printArea(opts) {
 		//shit
-		console.log(opts, plan(opts).area());
+		console.log(opts, opts.area);
 	}
 	function printStep(opts) {
-		var cost = calcCost(opts);
-		
+
 		// shit
-		console.log(opts, cost);
+		console.log(opts.opts, opts.cost);
 	}
 	
 	function printDollarsPerArea(opts) {
-		var cost = calcCost(opts);
-		
+
 		// shit
-		console.log(opts, (cost / plan(opts).area()).toFixed(2));
+		console.log(opts.opts, opts.dpa);
 	}
 	
-	
+	function calcAll(opts) {
+		var cost = calcCost(opts);
+		var area = plan(opts).area();
+		
+		return {
+			opts: opts,
+			cost: cost,
+			dpa: (cost / area).toFixed(2),
+			area: area,
+		};
+	}
 
 	
-	var steps = allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts))
+	var steps = allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts)).map(calcAll)
 	if(argv.a && argv.c) {
-		steps.map(printDollarsPerArea);
+		_.sortBy(steps, 'dpa').reverse().map(printDollarsPerArea);
 	}
 	else if(argv.cost || argv.c) {
-		steps.map(printStep);
+		_.sortBy(steps, 'cost').reverse().map(printStep);
 	}
 	else if(argv.sqft || argv.a) {
-		steps.map(printArea);
+		_.sortBy(steps, 'area').map(printArea);
 	}
 	
 	
