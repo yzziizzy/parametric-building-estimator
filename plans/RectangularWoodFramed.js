@@ -36,7 +36,7 @@ module.exports = function(options) { return {
 	volume: function volume() {
 		return area() * 8; 
 	},
-	livableVolume: volume,
+	//livableVolume: volume,
 }};
 	
 

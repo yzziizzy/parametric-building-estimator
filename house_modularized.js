@@ -26,6 +26,7 @@ var _ = require('lodash');
 var util = require('util');
 var colors = require('colors');
 var fs = require('fs');
+// var Promise = require('bluebird'); // bluebird doesn't like "map" being a property of objects
 
 // var QList = require('./qlist');
 
@@ -265,6 +266,10 @@ function cutSegment(segment) {
 	};
 	
 	var stocks = supply[segment.material];
+	if(!stocks) {
+		console.log('no such material: ' + segment.material);
+		process.exit(2);
+	}
 	
 	var order = dimOrder(segment.dim);
 	
@@ -305,7 +310,9 @@ var defaultMaterials = {
 	sheathing: 'cdx_5',
 	stud: 'd2x4',
 	insulation: 'foam',
+	drywall: 'drywall_58',
 	rafter: 'd2x6', // TODO: needs to be extensible
+	siding: 'fiber_cement_siding',
 };
 
 
@@ -328,6 +335,46 @@ function calcPlanCuts(plan, materials) {
 
 
 
+// this is the interactive readline version
+function meh4() {
+	
+	var readline = require('readline');
+	
+	var rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+		completer: function(line) {
+			return [Object.keys(plans).filter(function(c) { return c.indexOf(line) == 0 }) , line]
+		}
+	});
+	
+	
+	rl.write('Choose Plan:\n');
+	plans.map(function(p, name) {
+		rl.write(' ' + name + '\n');
+	});
+	
+	rl.setPrompt('> ');
+	
+	rl.on('line', function(line) {
+		if(plans.hasOwnProperty(line)) {
+			rl.write('using ' + line + '\n');
+		}
+	});
+	
+	
+	rl.prompt();
+	
+/*	
+	rl.question('enter min val ', function(v) {
+		rl.write('you entered ' + v);
+	})*/
+	
+	
+}
+
+//meh4();
+
 
 
 //meh3();
@@ -349,14 +396,22 @@ function meh3() {
 	var max_price = parseFloat(argv.maxp);
 	
 	
+	var major_dims = argv.dims;
+	
+	
 	// construct starting parameters
 	var opts = plan.options.map(function(x) {
 		return [x.name, x.range[0]];  
 	}).pairsToObj();
 	
 	
+	
+	
+	
+	
 	// only take into account 'major' options for now
 	// pick an epsilon
+	var ep_m = 2;
 	
 	// calc delta
 	
@@ -370,7 +425,7 @@ function meh3() {
 
 
 
-meh2();
+ meh2();
 function meh2() {
 	
 // 	console.log(argv);
@@ -381,38 +436,57 @@ function meh2() {
 		return;
 	}
 	
-	var plan = plans[argv._[0]];
 	
-	if(!plan) {
-		console.log('no such plan: ' + argv._[0]);
-		process.exit(1);
+	if(argv.file) {
+		var fo = require('./' + argv.file);
+		
+		
+		var plan = plans[fo.plan];
+		if(!plan) {
+			console.log('no such plan: ' + argv._[0]);
+			process.exit(1);
+		}
+		
+		var opts = fo.opts;
+		var from_opts = fo.from;
+		var to_opts = fo.to;
+		var step_opts = fo.step;
+		
 	}
+	else {
+	
+		var plan = plans[argv._[0]];
+		
+		if(!plan) {
+			console.log('no such plan: ' + argv._[0]);
+			process.exit(1);
+		}
 	
 	
-	function parseOpts(s) {
-		return s.split(',')
-			.map(function(x) { return x.split(':')})
-			.pairsToObj()
-			.map(parseFloat);
+		function parseOpts(s) {
+			return s.split(',')
+				.map(function(x) { return x.split(':')})
+				.pairsToObj()
+				.map(parseFloat);
+		}
+		
+		
+		if(argv.o) {
+			var opts = parseOpts(argv.o.replace(/\s+/, ''));
+		}
+		if(argv.from) {
+			var from_opts = parseOpts(argv.from.replace(/\s+/, ''));
+		}
+		if(argv.to) {
+			var to_opts = parseOpts(argv.to.replace(/\s+/, ''));
+		}
+		if(argv.step) {
+			var step_opts = parseOpts(argv.step.replace(/\s+/, ''));
+		}
+		
+		
 	}
-	
-	
-	if(argv.o) {
-		var opts = parseOpts(argv.o.replace(/\s+/, ''));
-	}
-	if(argv.from) {
-		var from_opts = parseOpts(argv.from.replace(/\s+/, ''));
-	}
-	if(argv.to) {
-		var to_opts = parseOpts(argv.to.replace(/\s+/, ''));
-	}
-	if(argv.step) {
-		var step_opts = parseOpts(argv.step.replace(/\s+/, ''));
-	}
-	
-	
-	
-	console.log(step_opts);
+	// console.log(step_opts);
 	
 	// actual work
 	function calcCost(opts) {

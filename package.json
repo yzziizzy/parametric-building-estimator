@@ -9,6 +9,7 @@
   "author": "izzy",
   "license": "AGPLv3",
   "dependencies": {
+    "bluebird": "^2.9.34",
     "colors": "^1.1.0",
     "lodash": "^2.4.1",
     "minimist": "^1.1.1"
