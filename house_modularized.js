@@ -313,6 +313,9 @@ var defaultMaterials = {
 	drywall: 'drywall_58',
 	rafter: 'd2x6', // TODO: needs to be extensible
 	siding: 'fiber_cement_siding',
+	floor_joist: 'd2x10',
+	floor_decking: 'cdx_75',
+	joist_hanger: 'joist_hanger_2x10',
 };
 
 

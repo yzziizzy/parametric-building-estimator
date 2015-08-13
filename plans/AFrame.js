@@ -101,7 +101,7 @@ module.exports = function(options) { return {
 	livableArea: function() {
 		
 		
-	}
+	},
 
 	volume: function() {
 		return options.length * options.width * options.height * .5;

@@ -5,7 +5,9 @@ global.ceil = Math.ceil;
 global.floor = Math.floor;
 global.max = Math.max;
 global.min = Math.min;
-global.hypot = Math.hypot;
+global.hypot = Math.hypot || function(a, b) {
+	return Math.sqrt(a*a + b*b)
+};
 
 
 

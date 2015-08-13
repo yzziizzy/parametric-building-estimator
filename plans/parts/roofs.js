@@ -143,6 +143,7 @@ function prismCorner(length, width, height) {
 
 module.exports = {
 	prismRoof: prismRoof,
+	prismCorner: prismCorner,
 	
 };
 

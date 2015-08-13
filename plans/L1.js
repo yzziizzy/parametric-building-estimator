@@ -1,6 +1,7 @@
 
 var bareStudWall = require('./parts/walls').bareStudWall;
 var prismRoof = require('./parts/roofs').prismRoof;
+var prismCorner = require('./parts/roofs').prismCorner;
 var platformFdn = require('./parts/foundations').platform;
 
 /*
@@ -30,6 +31,10 @@ C = Length - EndLength
 D = Width - EndWidth
 
 */
+
+
+
+
 
 
 
@@ -70,11 +75,13 @@ module.exports = function(options) { return {
 					CompMember(d(A+B+C+D+E+F + (sheathingThickness * 12) + (insulationThickness * 6), wallH)),
 				],
 				// siding
+				// furring
 				// foam tape
 			}),
 			
 			prismRoof(C, B, options.roofHeight),
 			prismRoof(D, E, options.roofHeight),
+			prismCorner(B, E, options.roofHeight),
 			//TODO: need the corner part
 			
 			platformFdn(A, B),
@@ -94,12 +101,12 @@ module.exports = function(options) { return {
 	
 	// all this shit is just wrong
 	area: function area() {
-		return options.length * options.width;
+		return (options.length * options.width) - (options.endLength * options.endWidth);
 	},
 	volume: function volume() {
 		return area() * 8; 
 	},
-	livableVolume: volume,
+// 	livableVolume: volume,
 }};
 	
 

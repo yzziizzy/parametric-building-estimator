@@ -38,7 +38,7 @@ function platform(length, width) {
 		],
 		floor_decking: CompMember(d(w, l), 1),
 		flooring: CompMember(1, length * width),
-		joist_hangars: CompMember(1, 2 * ceil(l / jspacing) * floor(w / max_span)) // two for every joist, per span
+		joist_hanger: CompMember(1, 2 * ceil(l / jspacing) * floor(w / max_span)) // two for every joist, per span
 // 		concrete: // under pads
 		// supports of whatever kind
 	});
