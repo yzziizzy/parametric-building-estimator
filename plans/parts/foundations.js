@@ -17,9 +17,34 @@ function slab(length, width, thickness) {
 
 
 
+/*
+ * 50 live + 20 dead
+max spans, L/360, 12"oc, 1.6m Em (#1 select northern douglas fir)
+
+6: 10
+8: 13
+10: 16.75
+12: 20.25
+
+16"oc:
+2x6: 9
+2x8: 12
+2x10: 15
+2x12: 18.5
+
+24"oc:
+6: 8
+8: 10.5
+10: 13.25
+12: 16
+
+
+*/
+
+
 function platform(length, width) {
 	
-	var jspacing = 8 / 12;
+	var jspacing = 16 / 12;
 	
 	var max_span = 12;
 	

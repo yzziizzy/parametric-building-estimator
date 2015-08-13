@@ -15,9 +15,14 @@ module.exports = {
 		Stock(d(14), 7.47),
 		Stock(d(16), 8.35),
 	],
-	d2x8: [
-		Stock(d(8), 5.56),
-		Stock(d(10), 6.96),
+	d2x8: [ //SPF #2&btr
+		Stock(d(8), 8.14),
+		Stock(d(10), 10.17),
+		Stock(d(12), 12.21),
+		Stock(d(14), 14.24),
+		Stock(d(16), 17.28),
+		Stock(d(18), 21.14),
+		Stock(d(20), 23.49),
 	],
 	d2x10: [
 		Stock(d(8), 8),
@@ -38,7 +43,15 @@ module.exports = {
 		Stock(d(10), 16.18),
 		Stock(d(12), 19.42),
 	],
-	
+	pt2x8: [ // hem/fir premium grade
+		Stock(d(8), 12.69),
+		Stock(d(10), 15.86),
+		Stock(d(12), 20.76),
+		Stock(d(14), 24.49),
+		Stock(d(16), 27.99),
+		Stock(d(18), 31.49),
+		Stock(d(20), 34.99),
+	],
 	cedar4x4: [
 		Stock(d(8), 27.80),
 		Stock(d(10), 39.18),
@@ -226,7 +239,7 @@ module.exports = {
 	plywood_clips_1532: Stock(1, 5.56 / 50),
 	plywood_clips_5: Stock(1, 6.13 / 50),
 	plywood_clips_58: Stock(1, 7.81 / 50),
-	plywood_clips_75: Stock(1, 21/82 / 250),
+	plywood_clips_75: Stock(1, 21.82 / 250),
 	
 	connector_nail_15in: Stock(1, 4.74 / 147),
 	framing_nail_3in: Stock(1, 38.98 / 4000),
