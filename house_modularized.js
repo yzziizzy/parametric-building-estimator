@@ -493,11 +493,7 @@ function meh2() {
 	
 	// actual work
 	function calcCost(opts) {
-		var cl = calcPlanCuts(plan(opts).components(), defaultMaterials);
-	
-		return parseFloat(cl.reduce(function(acc, x) {
-			return acc + (isNaN(x.cost) ? 0 : x.cost); 
-		}, 0).toFixed(2));
+
 	}
 	
 	function printArea(opts) {
@@ -517,19 +513,33 @@ function meh2() {
 	}
 	
 	function calcAll(opts) {
-		var cost = calcCost(opts);
 		var area = plan(opts).area();
+		
+		var comps = plan(opts).components();
+		
+		var cl = calcPlanCuts(comps, defaultMaterials);
+	
+		var cost = parseFloat(cl.reduce(function(acc, x) {
+			return acc + (isNaN(x.cost) ? 0 : x.cost); 
+		}, 0).toFixed(2));
 		
 		return {
 			opts: opts,
+			comps: comps,
+			cl: cl,
 			cost: cost,
 			dpa: (cost / area).toFixed(2),
 			area: area,
 		};
 	}
-
 	
-	var steps = allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts)).map(calcAll)
+	function printCut(cutPlan) {
+		console.log(cutPlan);
+		
+	}
+	
+	
+	var steps = allSteps(from_opts, to_opts, step_opts, Object.keys(step_opts)).map(calcAll);
 	if(argv.a && argv.c) {
 		_.sortBy(steps, 'dpa').reverse().map(printDollarsPerArea);
 	}
@@ -538,6 +548,12 @@ function meh2() {
 	}
 	else if(argv.sqft || argv.a) {
 		_.sortBy(steps, 'area').map(printArea);
+	}
+	else if(argv.details || argv.d) {
+		var p = _.last(_.sortBy(steps, 'dpa'));
+		
+// 		console.log(p.cl);
+		p.cl.map(printCut);
 	}
 	
 	
