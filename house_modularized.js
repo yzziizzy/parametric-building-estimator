@@ -37,6 +37,7 @@ var argv = require('minimist')(process.argv.slice(2));
 
 // listing of available materials and their data
 var supply = require('./supplies').forceArray();
+var supply_byID = supply.unGroup('material').indexBy('id');
 
 
 
@@ -553,7 +554,21 @@ function meh2() {
 		var p = _.last(_.sortBy(steps, 'dpa'));
 		
 // 		console.log(p.cl);
-		p.cl.map(printCut);
+		//p.cl.map(printCut);
+		var bom = p.cl.reduce(function(acc, cp) {
+			cp.cuts.map(function(c) {
+				acc[c.id] = acc[c.id] || 0;
+				acc[c.id] += cp.qty;
+			});
+			
+			return acc;
+		}, {}).map(function(v, k) {
+			var s = supply_byID[k]
+			
+			console.log(s.material + '-' + s.scalarDim, '\tx' + ceil(v), '\t$' + (v * s.cost).toFixed(2));
+			
+		});
+		
 	}
 	
 	
